@@ -1,0 +1,81 @@
+// Author : Farid dan Alex
+// Tugas UAS Matematika Diskrit
+//Optimasi Jalur Terpendek dari Surabaya ke Bogor Menggunakan Algoritma Djikstra Berbasis Graph
+
+package main
+
+import (
+	"container/heap"
+	"fmt"
+	"math"
+)
+
+// Struktur Graph
+
+// Edge merepresentasikan sisi graph
+type Edge struct {
+	to     string
+	weight int // jarak (km)
+}
+
+// Graph menggunakan adjacency list
+type Graph map[string][]Edge
+
+// Priority Queue
+
+type Item struct {
+	node     string
+	priority int
+	index    int
+}
+
+type PriorityQueue []*Item
+
+func (pq PriorityQueue) Len() int { return len(pq) }
+
+func (pq PriorityQueue) Less(i, j int) bool {
+	return pq[i].priority < pq[j].priority
+}
+
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	pq[i].index = i
+	pq[j].index = j
+}
+
+func (pq *PriorityQueue) Push(x interface{}) {
+	item := x.(*Item)
+	*pq = append(*pq, item)
+}
+
+func (pq *PriorityQueue) Pop() interface{} {
+	old := *pq
+	n := len(old)
+	item := old[n-1]
+	*pq = old[0 : n-1]
+	return item
+}
+
+// Dijkstra + Path Tracking
+
+func Dijkstra(graph Graph, start string) (map[string]int, map[string]string) {
+	dist := make(map[string]int)
+	prev := make(map[string]string)
+
+	// Inisialisasi jarak
+	for node := range graph {
+		dist[node] = math.MaxInt32
+	}
+	dist[start] = 0
+
+	pq := &PriorityQueue{}
+	heap.Init(pq)
+	heap.Push(pq, &Item{node: start, priority: 0})
+
+	for pq.Len() > 0 {
+		current := heap.Pop(pq).(*Item)
+
+		for _, edge := range graph[current.node] {
+			alt := dist[current.node] + edge.weight
+			if alt < dist[edge.to] {
+				dist[edge.to] = al
