@@ -1,4 +1,4 @@
-// Author : Farid dan Alex
+// Author : Farid dan abdurrahman ash shiddiq
 // Tugas UAS Matematika Diskrit
 //Optimasi Jalur Terpendek dari Surabaya ke Bogor Menggunakan Algoritma Djikstra Berbasis Graph
 
@@ -79,3 +79,4 @@ func Dijkstra(graph Graph, start string) (map[string]int, map[string]string) {
 			alt := dist[current.node] + edge.weight
 			if alt < dist[edge.to] {
 				dist[edge.to] = al
+
